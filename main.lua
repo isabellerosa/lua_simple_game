@@ -26,6 +26,7 @@ function love.load()
 
     --imagens do jogo
     background_img = love.graphics.newImage("imagens/universe.png")
+    
     nave_img = love.graphics.newImage(nave.imagem_src)
     tiro_img = love.graphics.newImage("imagens/tiro.png")
   
