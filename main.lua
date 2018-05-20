@@ -10,6 +10,9 @@ jogo = {
 	numero_meteoros_objetivo = 100
 }
 
+start = love.timer.getTime() --relogio
+
+
 function love.load()
 	--propriedades da janela
 	love.window.setMode(jogo.largura_tela, jogo.altura_tela, {resizable = false})
@@ -24,6 +27,7 @@ function love.load()
     --imagens do jogo
     background_img = love.graphics.newImage("imagens/universe.png")
     nave_img = love.graphics.newImage(nave.imagem_src)
+    tiro_img = love.graphics.newImage("imagens/tiro.png")
   
     --sons do jogo
 
@@ -31,10 +35,24 @@ end
  
 function love.update(dt)
 	nave:move(jogo.largura_tela, jogo.altura_tela)
+	
+	nave:moveTiro()
+end
+
+function love.keypressed(tecla)
+	if tecla == "space" and (love.timer.getTime() - start) >= 0.75 then
+		nave:atira()
+		start = love.timer.getTime() 
+	end
 end
  
 function love.draw()
     love.graphics.draw(background_img, 0, 0)
     love.graphics.draw(nave_img, nave.x, nave.y)
 
+
+    --desenha tiros
+    for k, tiro in pairs(nave.tiros) do
+        love.graphics.draw(tiro_img, tiro.x, tiro.y) 
+    end
 end
