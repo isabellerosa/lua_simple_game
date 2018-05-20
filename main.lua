@@ -30,7 +30,7 @@ function love.load()
 end
  
 function love.update(dt)
-
+	nave:move(jogo.largura_tela, jogo.altura_tela)
 end
  
 function love.draw()
