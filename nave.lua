@@ -1,3 +1,5 @@
+require("tiro")
+
 Nave = {
     largura = 64,
     altura = 64,
@@ -32,24 +34,9 @@ function Nave:move(largura_tela, altura_tela)
 end
 
 function Nave:atira()
-    local tiro = {
-        largura = 16,
-        altura = 16,
-        x = self.x + self.largura/2 - 8,
-        y = self.y - 8
-    }
-    table.insert(self.tiros, tiro)
-end
-
-
-function Nave:moveTiro()
-  for i = #self.tiros, 1, -1 do --percorre o array de trás pra frente
-      if self.tiros[i].y > 0 then
-          self.tiros[i].y = self.tiros[i].y - 2
-      else
-          table.remove(self.tiros, i)
-      end
-  end
+  local tiro = criaTiro(self.x+self.largura/2-8, self.y-8)
+  
+  table.insert(self.tiros, tiro)
 end
 
 return Nave

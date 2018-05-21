@@ -1,22 +1,7 @@
 class_nave = require("nave")
+require("tiro")
+require("conf")
 
-jogo = {
-	titulo = "Nave x Asteroides",
-	largura_tela = 320,
-	altura_tela = 480,
-	max_meteoros = 12,
-	fim_jogo = false,
-	meteoros_atingidos = 0,
-	numero_meteoros_objetivo = 100,
-	menu_ativo = true,
-	ativo = false,
-	guia = true
-}
-
-jogo.menu = {
-	jogar = true,
-	sair = false
-}
 
 function logicaMenu(tecla)
 	if menu.jogar and ( tecla == 's' or tecla == 'down') then 
@@ -69,9 +54,9 @@ end
  
 function love.update(dt)
 	-- se o jogo tiver começado
-	if jogo.menu_ativo == false and jogo.fim_jogo == false and not jogo.help then
+	if jogo.menu_ativo == false and jogo.fim_jogo == false then
 		nave:move(jogo.largura_tela, jogo.altura_tela)
-		nave:moveTiro()
+		moveTiro(nave.tiros)
 	end
 end
 
