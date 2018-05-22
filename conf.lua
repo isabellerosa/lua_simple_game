@@ -6,12 +6,12 @@ jogo = {
 	fim_jogo = false,
 	meteoros_atingidos = 0,
 	numero_meteoros_objetivo = 100,
-	menu_ativo = true,
+	menu_principal_ativo = true,
 	ativo = false,
-	guia = true
+	info_controles = true
 }
 
-jogo.menu = {
+jogo.menu_principal = {
 	jogar = true,
 	sair = false
 }
