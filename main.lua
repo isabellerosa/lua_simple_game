@@ -1,7 +1,7 @@
 class_nave = require("nave")
 require("tiro")
 require("conf")
-
+require("meteoro")
 
 function logicaMenu(tecla)
 	if jogo.menu_principal.jogar and ( tecla == 's' or tecla == 'down') then 
@@ -31,6 +31,9 @@ function love.load()
   	--path das imagens-estado da nave
     nave_src = "imagens/nave.png"
 
+    --Garante que o Math.random não seja igual em cada inicialização
+    math.randomseed(os.time())
+
     --instancia um objeto da classe Nave
     nave = class_nave:new(nil, jogo.largura_tela/2, jogo.altura_tela, nave_src)
     --menu principal
@@ -47,10 +50,15 @@ function love.load()
   	startact_img = love.graphics.newImage("imagens/menu/sjogar.png")
   	exitact_img = love.graphics.newImage("imagens/menu/ssair.png")
   	comandos_img = love.graphics.newImage("imagens/menu/comandos.png")
-
+  	meteoro_img = love.graphics.newImage("imagens/asteroide.png")
 
     --sons do jogo
+    musica_ambiente = love.audio.newSource("audios/ambiente.mp3","stream")
+    musica_ambiente:setLooping(true)
+    love.audio.play(musica_ambiente)
 
+    musica_destruicao = love.audio.newSource("audios/destruicao.wav","stream")
+    musica_game_over = love.audio.newSource("audios/game_over.wav","stream")
 end
  
 function love.update(dt)
@@ -58,7 +66,21 @@ function love.update(dt)
 	if jogo.menu_principal_ativo == false and jogo.fim_jogo == false then
 		nave:move(jogo.largura_tela, jogo.altura_tela)
 		moveTiro(nave.tiros)
+
+		if jogo.info_controles == false and jogo.ativo == true then
+			removeMeteoros()
+
+		    if #meteoros < jogo.max_meteoros then
+		    	criaMeteoro()
+		    end
+
+		    moveMeteoros()
+		    checaColisoes()
+		end    
+
 	end
+		
+
 end
 
 function love.keypressed(tecla)
@@ -106,4 +128,12 @@ function love.draw()
 	        love.graphics.draw(tiro_img, tiro.x, tiro.y) 
 	    end
 	end
+
+	-- desenha os asteroides
+	for i,meteoro in pairs(meteoros) do
+    	love.graphics.draw(meteoro_img, meteoro.x, meteoro.y)
+    end
 end
+
+
+
