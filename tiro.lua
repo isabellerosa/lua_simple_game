@@ -19,3 +19,17 @@ function moveTiro(tiros)
       end
   end
 end
+
+
+function checaColisaoComTiros(nave)
+	for i = #nave.tiros, 1, -1 do
+		for j = #meteoros, 1, -1 do
+			if temColisao(nave.tiros[i].x, nave.tiros[i].y, nave.tiros[i].largura, nave.tiros[i].altura,
+					meteoros[j].x, meteoros[j].y, meteoros[j].largura, meteoros[j].altura) then
+						table.remove(nave.tiros, i)
+						table.remove(meteoros, j)
+						break
+			end
+		end
+	end
+end

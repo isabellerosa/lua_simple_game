@@ -37,15 +37,10 @@ function temColisao(X1, Y1, L1, A1, X2, Y2, L2, A2)
 end
 
 function checaColisoes(jogo, nave)
-	for k,meteoro in pairs(meteoros) do
-		if temColisao(meteoro.x, meteoro.y, meteoro.largura, meteoro.altura,
-		 nave.x, nave.y, nave.largura, nave.altura) then
-			trocaMusicaDeFundo()
-			nave:destroi()
-			jogo.fim_jogo = true
-			jogo.menu_secundario = true
-		end
-	end
+
+	checaColisaoComAviao(nave)
+	checaColisaoComTiros(nave)
+
 end
 
 function removeMeteoros()
@@ -68,5 +63,17 @@ end
 function limpaMeteoros()
 	for i = #meteoros,1,-1 do
 		table.remove(meteoros, i)
+	end
+end
+
+function checaColisaoComAviao(nave)
+	for k,meteoro in pairs(meteoros) do
+		if temColisao(meteoro.x, meteoro.y, meteoro.largura, meteoro.altura,
+		 nave.x, nave.y, nave.largura, nave.altura) then
+			trocaMusicaDeFundo()
+			nave:destroi()
+			jogo.fim_jogo = true
+			jogo.menu_secundario = true
+		end
 	end
 end

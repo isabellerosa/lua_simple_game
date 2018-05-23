@@ -34,6 +34,7 @@ function Nave:move(largura_tela, altura_tela)
 end
 
 function Nave:atira()
+  love.audio.play(musica_disparo)
   local tiro = criaTiro(self.x+self.largura/2-8, self.y-8)
   
   table.insert(self.tiros, tiro)
@@ -48,5 +49,6 @@ function Nave:destroi()
   love.audio.play(musica_destruicao)
   self.imagem = navedestroy_img
 end
+
 
 return Nave

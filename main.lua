@@ -3,7 +3,10 @@ require("tiro")
 require("conf")
 require("meteoro")
 
+
 function resetGame()
+	love.audio.stop(musica_destruicao)
+	love.audio.stop(musica_game_over)
 	nave:reset(jogo.largura_tela, jogo.altura_tela)
 	nave.imagem = nave_img
 	limpaMeteoros()
@@ -92,10 +95,12 @@ function love.load()
     --sons do jogo
     musica_ambiente = love.audio.newSource("audios/ambiente.mp3","stream")
     musica_ambiente:setLooping(true)
-    love.audio.play(musica_ambiente)
+	love.audio.play(musica_ambiente)
 
     musica_destruicao = love.audio.newSource("audios/destruicao.wav","stream")
-    musica_game_over = love.audio.newSource("audios/game_over.wav","stream")
+	musica_game_over = love.audio.newSource("audios/game_over.wav","stream")
+	
+	musica_disparo = love.audio.newSource("audios/disparo.wav","stream")
 
     --instancia um objeto da classe Nave
     nave = class_nave:new(nil, jogo.largura_tela/2, jogo.altura_tela, nave_img)
