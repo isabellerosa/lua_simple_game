@@ -1,9 +1,9 @@
 require("tiro")
 
 Nave = {
-    largura = 64,
-    altura = 64,
-    tiros = {}
+  largura = 51,
+  altura = 58,
+  tiros = {}
 }
 
 -- construtor
@@ -13,7 +13,7 @@ function Nave:new (obj, posx, posy, img)
   self.__index = self
   self.x = posx - self.largura/2 or 0 --seta posição no meio da tela
   self.y = posy - self.altura or 0 --seta nave na posição inferior
-  self.imagem_src = img
+  self.imagem = img
   return obj
 end
 
@@ -44,5 +44,9 @@ function Nave:reset(posx, posy)
   self.y = posy - self.altura or 0 --seta nave na posição inferiors
 end
 
+function Nave:destroi()
+  love.audio.play(musica_destruicao)
+  self.imagem = navedestroy_img
+end
 
 return Nave

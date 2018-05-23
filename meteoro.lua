@@ -13,7 +13,7 @@ function criaMeteoro()
 		x = math.random(jogo.largura_tela),
 		y = -70,
 		largura = 50,
-		altura = 44,
+		altura = 43,
 		peso = math.random(3),
 		deslocamento_horizontal = math.random(-1,1)
 		
@@ -36,17 +36,12 @@ function temColisao(X1, Y1, L1, A1, X2, Y2, L2, A2)
 			Y2 < Y1 + A1
 end
 
-function trocaMusicaDeFundo()
-	love.audio.stop(musica_ambiente)
-	love.audio.play(musica_game_over)
-end
-
 function checaColisoes(jogo, nave)
 	for k,meteoro in pairs(meteoros) do
 		if temColisao(meteoro.x, meteoro.y, meteoro.largura, meteoro.altura,
 		 nave.x, nave.y, nave.largura, nave.altura) then
 			trocaMusicaDeFundo()
-			destroiNave()
+			nave:destroi()
 			jogo.fim_jogo = true
 			jogo.menu_secundario = true
 		end
@@ -61,14 +56,14 @@ function removeMeteoros()
 	end
 end
 
-function destroiNave()
-	
-	love.audio.play(musica_destruicao)
-	nave.imagem_src  = "imagens/tiro.png"
-	nave.imagem = love.graphics.newImage(nave.imagem_src )
-	nave.altura = 16
-	nave.largura = 16
-end
+--function destroiNave()
+--	
+--	love.audio.play(musica_destruicao)
+--	nave.imagem_src  = "imagens/tiro.png"
+--	nave.imagem = love.graphics.newImage(nave.imagem_src )
+--	nave.altura = 16
+--	nave.largura = 16
+--end
 
 function limpaMeteoros()
 	for i = #meteoros,1,-1 do

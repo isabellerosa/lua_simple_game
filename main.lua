@@ -3,12 +3,13 @@ require("tiro")
 require("conf")
 require("meteoro")
 
-
 function resetGame()
 	nave:reset(jogo.largura_tela, jogo.altura_tela)
+	nave.imagem = nave_img
 	limpaMeteoros()
 	jogo.meteoros_atingidos = 0
 	jogo.fim_jogo = false
+	love.audio.play(musica_ambiente)
 end
 
 function menuPrincipal(tecla)
@@ -46,6 +47,11 @@ function menuSecundario(tecla)
 	end	
 end
 
+function trocaMusicaDeFundo()
+	love.audio.stop(musica_ambiente)
+	love.audio.play(musica_game_over)
+end
+
 function love.load()
 	--propriedades da janela
 	love.window.setMode(jogo.largura_tela, jogo.altura_tela, {resizable = false})
@@ -55,13 +61,11 @@ function love.load()
     start = love.timer.getTime()
 
   	--path das imagens-estado da nave
-    nave_src = "imagens/nave.png"
+    --nave_src = "imagens/nave.png"
 
     --Garante que o Math.random não seja igual em cada inicialização
     math.randomseed(os.time())
 
-    --instancia um objeto da classe Nave
-    nave = class_nave:new(nil, jogo.largura_tela/2, jogo.altura_tela, nave_src)
     --menu principal
     menu = jogo.menu
 
@@ -69,7 +73,8 @@ function love.load()
     background_img = love.graphics.newImage("imagens/universe.png")
     cover_img= love.graphics.newImage("imagens/menu/cover.png")
 
-    nave_img = love.graphics.newImage(nave.imagem_src)
+    nave_img = love.graphics.newImage("imagens/nave.png")
+    navedestroy_img = love.graphics.newImage("imagens/explosao_nave.png")
     tiro_img = love.graphics.newImage("imagens/tiro.png")
   	start_img = love.graphics.newImage("imagens/menu/jogar.png")
   	exit_img = love.graphics.newImage("imagens/menu/sair.png")
@@ -91,6 +96,9 @@ function love.load()
 
     musica_destruicao = love.audio.newSource("audios/destruicao.wav","stream")
     musica_game_over = love.audio.newSource("audios/game_over.wav","stream")
+
+    --instancia um objeto da classe Nave
+    nave = class_nave:new(nil, jogo.largura_tela/2, jogo.altura_tela, nave_img)
 end
  
 function love.update(dt)
@@ -132,6 +140,7 @@ function love.keypressed(tecla)
 			start = love.timer.getTime() 
 
 	elseif tecla == 'escape' then
+		resetGame()
 		jogo.menu_principal = true		
 	end
 end
@@ -155,6 +164,7 @@ function love.draw()
 		love.graphics.draw(nave_img, nave.x, nave.y)
 
 	elseif jogo.fim_jogo then
+			    love.graphics.draw(nave.imagem, nave.x, nave.y)
 		--se o jogador tiver vencido
 		if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo  then
 			love.graphics.draw(vencedor_img, 0, 0)
@@ -173,7 +183,7 @@ function love.draw()
 		end
 	--jogo
 	else
-	    love.graphics.draw(nave_img, nave.x, nave.y)
+	    love.graphics.draw(nave.imagem, nave.x, nave.y)
 
 	    --desenha tiros
 	    for k, tiro in pairs(nave.tiros) do
