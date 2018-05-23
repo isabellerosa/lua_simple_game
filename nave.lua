@@ -39,4 +39,10 @@ function Nave:atira()
   table.insert(self.tiros, tiro)
 end
 
+function Nave:reset(posx, posy)
+  self.x = posx/2 - self.largura/2 or 0 --seta posição no meio da tela
+  self.y = posy - self.altura or 0 --seta nave na posição inferiors
+end
+
+
 return Nave

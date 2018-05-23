@@ -41,13 +41,14 @@ function trocaMusicaDeFundo()
 	love.audio.play(musica_game_over)
 end
 
-function checaColisoes()
+function checaColisoes(jogo, nave)
 	for k,meteoro in pairs(meteoros) do
 		if temColisao(meteoro.x, meteoro.y, meteoro.largura, meteoro.altura,
 		 nave.x, nave.y, nave.largura, nave.altura) then
 			trocaMusicaDeFundo()
 			destroiNave()
 			jogo.fim_jogo = true
+			jogo.menu_secundario = true
 		end
 	end
 end
@@ -67,4 +68,10 @@ function destroiNave()
 	nave.imagem = love.graphics.newImage(nave.imagem_src )
 	nave.altura = 16
 	nave.largura = 16
+end
+
+function limpaMeteoros()
+	for i = #meteoros,1,-1 do
+		table.remove(meteoros, i)
+	end
 end
