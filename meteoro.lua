@@ -39,7 +39,7 @@ end
 function checaColisoes(jogo, nave)
 
 	checaColisaoComAviao(nave)
-	checaColisaoComTiros(nave)
+	checaColisaoComTiros(nave, jogo)
 
 end
 
@@ -50,15 +50,6 @@ function removeMeteoros()
 		end
 	end
 end
-
---function destroiNave()
---	
---	love.audio.play(musica_destruicao)
---	nave.imagem_src  = "imagens/tiro.png"
---	nave.imagem = love.graphics.newImage(nave.imagem_src )
---	nave.altura = 16
---	nave.largura = 16
---end
 
 function limpaMeteoros()
 	for i = #meteoros,1,-1 do

@@ -5,14 +5,17 @@ require("meteoro")
 
 
 function resetGame()
+	love.audio.stop(musica_vitoria)
 	love.audio.stop(musica_destruicao)
 	love.audio.stop(musica_game_over)
+	love.audio.stop(musica_ambiente)
+
 	nave:reset(jogo.largura_tela, jogo.altura_tela)
 	nave.imagem = nave_img
 	limpaMeteoros()
+	limpaTiros(nave.tiros)
 	jogo.meteoros_atingidos = 0
 	jogo.fim_jogo = false
-	love.audio.play(musica_ambiente)
 end
 
 function menuPrincipal(tecla)
@@ -52,7 +55,11 @@ end
 
 function trocaMusicaDeFundo()
 	love.audio.stop(musica_ambiente)
-	love.audio.play(musica_game_over)
+	if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo then
+	    love.audio.play(musica_vitoria)		
+	else
+		love.audio.play(musica_game_over)
+	end
 end
 
 function love.load()
@@ -62,9 +69,6 @@ function love.load()
 
     --relogio
     start = love.timer.getTime()
-
-  	--path das imagens-estado da nave
-    --nave_src = "imagens/nave.png"
 
     --Garante que o Math.random não seja igual em cada inicialização
     math.randomseed(os.time())
@@ -95,10 +99,11 @@ function love.load()
     --sons do jogo
     musica_ambiente = love.audio.newSource("audios/ambiente.mp3","stream")
     musica_ambiente:setLooping(true)
-	love.audio.play(musica_ambiente)
+	--love.audio.play(musica_ambiente)
 
     musica_destruicao = love.audio.newSource("audios/destruicao.wav","stream")
 	musica_game_over = love.audio.newSource("audios/game_over.wav","stream")
+	musica_vitoria = love.audio.newSource("audios/applause.mp3","stream")
 	
 	musica_disparo = love.audio.newSource("audios/disparo.wav","stream")
 
@@ -109,9 +114,9 @@ end
 function love.update(dt)
 	-- se o jogo tiver começado
 	if jogo.ativo and not jogo.info_controles and not jogo.fim_jogo then
+		love.audio.play(musica_ambiente)
 		nave:move(jogo.largura_tela, jogo.altura_tela)
 		moveTiro(nave.tiros)
-
 
 		removeMeteoros()
 
@@ -122,31 +127,41 @@ function love.update(dt)
 	    moveMeteoros()
 	    checaColisoes(jogo, nave)
 		
-
+	    if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo then
+	    	jogo.fim_jogo = true
+	    	trocaMusicaDeFundo()
+	    end
 	end
-		
-
 end
 
 function love.keypressed(tecla)
-	-- logica do menu principal
-	if jogo.menu_principal then
-		jogo.info_controles = true
-		menuPrincipal(tecla)
-	elseif jogo.fim_jogo then
-		menuSecundario(tecla)
-	-- some com o guia e comeca o jogo
-	elseif jogo.ativo and jogo.info_controles then
-		jogo.info_controles = false
 
-	--tecla de tiro com intervalo entre tiros
-	elseif tecla == "space" and (love.timer.getTime() - start) >= 0.5 then
-			nave:atira()
-			start = love.timer.getTime() 
+	if not jogo.fim_jogo then
 
-	elseif tecla == 'escape' then
-		resetGame()
-		jogo.menu_principal = true		
+		-- logica do menu principal
+		if jogo.menu_principal then
+			jogo.info_controles = true
+			menuPrincipal(tecla)
+
+		-- some com o guia e comeca o jogo
+		elseif jogo.ativo and jogo.info_controles then
+			jogo.info_controles = false
+
+		--tecla de tiro com intervalo entre tiros
+		elseif tecla == "space" and (love.timer.getTime() - start) >= 0.5 then
+				nave:atira()
+				start = love.timer.getTime() 
+
+		elseif tecla == 'escape' then
+			jogo.ativo = false
+			resetGame()
+			jogo.menu_principal = true		
+		end
+	else
+		--menu secundario
+		if (love.timer.getTime() - start) >= 1 then
+			menuSecundario(tecla)
+		end
 	end
 end
  
@@ -169,10 +184,10 @@ function love.draw()
 		love.graphics.draw(nave_img, nave.x, nave.y)
 
 	elseif jogo.fim_jogo then
-			    love.graphics.draw(nave.imagem, nave.x, nave.y)
+			love.graphics.draw(nave.imagem, nave.x, nave.y)
 		--se o jogador tiver vencido
 		if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo  then
-			love.graphics.draw(vencedor_img, 0, 0)
+			love.graphics.draw(winner_img, 0, 0)
 		--se o jogador tiver perdido
 		else
 			love.graphics.draw(gameover_img, 0, 0)
@@ -198,6 +213,8 @@ function love.draw()
 		for i,meteoro in pairs(meteoros) do
 	    	love.graphics.draw(meteoro_img, meteoro.x, meteoro.y)
 	    end
+
+	    love.graphics.print("Meteoros restantes "..jogo.numero_meteoros_objetivo - jogo.meteoros_atingidos, 0, 0)
 	end
 end
 
