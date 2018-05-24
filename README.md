@@ -21,8 +21,17 @@ Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE pa
   - [Lua](https://www.lua.org/start.html)
   - [LÖVE](https://love2d.org/)
   - Editor de texto
+## Sobre Lua
+Lua é uma linguagem de script de multiparadigma, pequena, reflexiva e leve, projetada para expandir aplicações em geral, por ser uma linguagem extensível (que une partes de um programa feitas em mais de uma linguagem), para prototipagem e para ser embarcada em softwares complexos. 
+Oferece suporte a programação procedural, orientada a objeto, funcional, orientada a dados e definição de dados. É tipada dinamicamente, interpretada a partir de bytecodes, e tem gerenciamento automático de memória com coleta de lixo.
 
-## Código
+*Nota: Lua não foi construída com suporte para programação orientada a objeto. Não contém apoio explícito à herança, mas permite que ela seja executada com relativa facilidade com metatables. Do mesmo modo, Lua permite que programadores quando implementam nomes, classes, e outras funções, empreguem poderosas técnicas de programação funcional e completos escopos lexicais.*
+
+## Sobre LÖVE
+LÖVE é um framework para criação de jogos 2D em Lua. É gratuito, código-aberto e funciona em Windows, Mac OS X, Linux, Android e iOS.
+
+
+## Arquivos e funções
 - main.lua
  : aplicação principal
   * menuPrincipal(tecla) - lógica do menu principal
@@ -60,5 +69,4 @@ Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE pa
   * removeMeteoros()
   * limpaMeteoros()
   * checaColisaoComNave(nave)
-  
-  
+ 
