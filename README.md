@@ -61,7 +61,7 @@ LÖVE é um framework para criação de jogos 2D em Lua. É gratuito, código-ab
   * limpaTiros(tiros)
   * checaColisaoComTiros(jogo, nave, meteoros)
   
- - meteoro.lua
+- meteoro.lua
   * criaMeteoro()
   * moveMeteoros()
   * temColisao(posx1, posy1, largura1, altura1, posx2, posy2, largura2, altura2)
