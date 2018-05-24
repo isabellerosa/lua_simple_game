@@ -7,15 +7,15 @@ Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE pa
 ## Implementação
 [x] Menu principal (jogar, sair)
 
-[ ] Nave (movimentação, destruição, tiros)
+[x] Nave (movimentação, destruição, tiros)
 
-[ ] Asteroides (criação, movimentação, destruição)
+[x] Asteroides (criação, movimentação, destruição)
 
-[ ] Telas de gameover e objetivo concluído
+[x] Telas de gameover e objetivo concluído
 
-[ ] Menu secundário (recomeçar, sair)
+[x] Menu secundário (recomeçar, sair)
 
-[ ] Pontuação
+[x] Pontuação
 
 ## Pré-requisitos (Desenvolvimento)
   - [Lua](https://www.lua.org/start.html)
@@ -25,7 +25,9 @@ Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE pa
 ## Código
 - main.lua
  : aplicação principal
-  * logicaMenu() - lógica do menu principal
+  * menuPrincipal(tecla) - lógica do menu principal
+  * menuSecundario(tecla)
+  * trocaMusicaDeFundo()
   * love.load() - carregamento de arquivos
   * love.update(dt) - lógica do programa
   * love.keypressed() - acionado quando o usuário aperta alguma tecla
@@ -37,11 +39,26 @@ Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE pa
 - nave.lua
  : contém a classe nave com sua estruturação e funções relacionadas.
   * Nave{} - estrutura tabela de Nave
-  * Nave:new - construtor de objeto
-  * Nave:move - movimentação do objeto nave
-  * Nave:atira - atira
+  * Nave:new(obj, posx, posy, img) - construtor de objeto
+  * Nave:move(largura_tela, altura_tela) - movimentação do objeto nave
+  * Nave:atira() - atira 
+  * Nave:reset(posx, posy) - reseta posição da imagem
+  * Nave:destroi() - destrói nave
   
 - tiro.lua
  : contém funções relacionadas à manipulação dos tiros da nave
   * criaTiro(posx, posy) - cria um objeto tiro na posição dada
   * moveTiro(tiros) - movimentação de tiros no array
+  * limpaTiros(tiros)
+  * checaColisaoComTiros(jogo, nave, meteoros)
+  
+ - meteoro.lua
+  * criaMeteoro()
+  * moveMeteoros()
+  * temColisao(posx1, posy1, largura1, altura1, posx2, posy2, largura2, altura2)
+  * checaColisoes(jogo, nave)
+  * removeMeteoros()
+  * limpaMeteoros()
+  * checaColisaoComNave(nave)
+  
+  
