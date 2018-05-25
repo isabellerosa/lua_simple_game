@@ -3,6 +3,7 @@ require("tiro")
 Nave = {
   largura = 51,
   altura = 58,
+  velocidade = 2,
   tiros = {}
 }
 
@@ -19,17 +20,17 @@ end
 
 
 function Nave:move(largura_tela, altura_tela)
-  if love.keyboard.isDown('w') or love.keyboard.isDown('up') and self.y >=0 then
-      self.y = self.y - 2
+  if (love.keyboard.isDown('w') or love.keyboard.isDown('up')) and (self.y >=0) then
+      self.y = self.y - self.velocidade
   end
-  if love.keyboard.isDown('s') or love.keyboard.isDown('down') and self.y < altura_tela - self.altura then
-      self.y = self.y + 2
+  if (love.keyboard.isDown('s') or love.keyboard.isDown('down')) and (self.y < altura_tela - self.altura) then
+      self.y = self.y + self.velocidade
   end
-  if love.keyboard.isDown('a') or love.keyboard.isDown('left') and self.x >= 0 then
-      self.x = self.x - 2
+  if (love.keyboard.isDown('a') or love.keyboard.isDown('left')) and (self.x >= 0) then
+      self.x = self.x - self.velocidade
   end
-  if love.keyboard.isDown('d') or love.keyboard.isDown('right') and self.x < largura_tela - self.largura  then
-      self.x = self.x + 2
+  if (love.keyboard.isDown('d') or love.keyboard.isDown('right')) and (self.x < largura_tela - self.largura)  then
+      self.x = self.x + self.velocidade
   end
 end
 
@@ -43,6 +44,7 @@ end
 function Nave:reset(posx, posy)
   self.x = posx/2 - self.largura/2 or 0 --seta posição no meio da tela
   self.y = posy - self.altura or 0 --seta nave na posição inferiors
+  self.velocidade = 2
 end
 
 function Nave:destroi()
@@ -50,5 +52,10 @@ function Nave:destroi()
   self.imagem = navedestroy_img
 end
 
+function Nave:aumentaVelocidade()
+  if self.velocidade < 4 then
+    self.velocidade = self.velocidade + 1
+  end
+end
 
-return Nave
+return Nave 

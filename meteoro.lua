@@ -8,13 +8,13 @@
 
 meteoros = {}
 
-function criaMeteoro()
+function criaMeteoro(dificuldade)
 	meteoro = {
 		x = math.random(jogo.largura_tela),
 		y = -70,
 		largura = 50,
 		altura = 43,
-		peso = math.random(3),
+		peso = math.random(dificuldade),
 		deslocamento_horizontal = math.random(-1,1)
 		
 	}

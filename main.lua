@@ -3,6 +3,21 @@ require("tiro")
 require("conf")
 require("meteoro")
 
+meta = 1
+
+function scoreRecorde()
+	local file = io.open("score.dat", "a+")
+	score = file:read() or 0
+	file:close()
+	return score+0
+end
+
+function salvaScore(score)
+	local file = io.open("score.dat", "w")
+	file:write(score)
+	file:flush()
+	file:close()
+end
 
 function resetGame()
 	love.audio.stop(musica_vitoria)
@@ -16,6 +31,9 @@ function resetGame()
 	limpaTiros(nave.tiros)
 	jogo.meteoros_atingidos = 0
 	jogo.fim_jogo = false
+	jogo.velocidade = 3
+	meta = 1
+
 end
 
 function menuPrincipal(tecla)
@@ -110,7 +128,7 @@ function love.load()
     --instancia um objeto da classe Nave
     nave = class_nave:new(nil, jogo.largura_tela/2, jogo.altura_tela, nave_img)
 end
- 
+
 function love.update(dt)
 	-- se o jogo tiver começado
 	if jogo.ativo and not jogo.info_controles and not jogo.fim_jogo then
@@ -121,17 +139,24 @@ function love.update(dt)
 		removeMeteoros()
 
 	    if #meteoros < jogo.max_meteoros then
-	    	criaMeteoro()
+	    	criaMeteoro(jogo.velocidade)
 	    end
 
 	    moveMeteoros()
 	    checaColisoes(jogo, nave)
 		
-	    if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo then
-	    	jogo.fim_jogo = true
-	    	trocaMusicaDeFundo()
+	    if jogo.meteoros_atingidos%10 == 0 and jogo.meteoros_atingidos > meta*10  then
+	    	jogo.velocidade = jogo.velocidade + 1
+	    	nave:aumentaVelocidade()
+	    	meta = meta + 1
 	    end
+
 	end
+
+	if (jogo.fim_jogo and jogo.meteoros_atingidos > scoreRecorde())	then
+		salvaScore(jogo.meteoros_atingidos)
+	end
+	
 end
 
 function love.keypressed(tecla)
@@ -166,11 +191,11 @@ function love.keypressed(tecla)
 end
  
 function love.draw()
-    love.graphics.draw(background_img, 0, 0)
+    love.graphics.draw(background_img, 60, 0)
 
     --desenha menu principal
 	if jogo.menu_principal then 
-		love.graphics.draw(cover_img, 0, 0)
+		love.graphics.draw(cover_img, jogo.largura_tela/2-160, 0)
 		if jogo.menu.jogar then
 			love.graphics.draw(startact_img, jogo.largura_tela/2-99, 240)
 			love.graphics.draw(exit_img, jogo.largura_tela/2-99, 310)
@@ -185,14 +210,8 @@ function love.draw()
 
 	elseif jogo.fim_jogo then
 			love.graphics.draw(nave.imagem, nave.x, nave.y)
-		--se o jogador tiver vencido
-		if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo  then
-			love.graphics.draw(winner_img, 0, 0)
-		--se o jogador tiver perdido
-		else
-			love.graphics.draw(gameover_img, 0, 0)
-		end
-
+			love.graphics.draw(gameover_img, jogo.largura_tela/2-160, 0)
+	
 		--exibe menu secundario
 		if jogo.menu.recomecar then
 			love.graphics.draw(restartact_img, jogo.largura_tela/2-99, 240)
@@ -214,7 +233,8 @@ function love.draw()
 	    	love.graphics.draw(meteoro_img, meteoro.x, meteoro.y)
 	    end
 
-	    love.graphics.print("Meteoros restantes "..jogo.numero_meteoros_objetivo - jogo.meteoros_atingidos, 0, 0)
+	    love.graphics.print("Meteoros atingidos: "..jogo.meteoros_atingidos, 0, 0)
+	    love.graphics.print("Recorde: "..scoreRecorde(), 0, 12)
 	end
 end
 
