@@ -1,7 +1,7 @@
 class_nave = require("nave")
 require("tiro")
 require("conf")
-require("meteoro")
+require("meteoroide")
 
 meta = 1
 
@@ -27,9 +27,9 @@ function resetGame()
 
 	nave:reset(jogo.largura_tela, jogo.altura_tela)
 	nave.imagem = nave_img
-	limpaMeteoros()
+	limpaMeteoroides()
 	limpaTiros(nave.tiros)
-	jogo.meteoros_atingidos = 0
+	jogo.meteoroides_atingidos = 0
 	jogo.fim_jogo = false
 	jogo.velocidade = 3
 	meta = 1
@@ -73,7 +73,7 @@ end
 
 function trocaMusicaDeFundo()
 	love.audio.stop(musica_ambiente)
-	if jogo.meteoros_atingidos == jogo.numero_meteoros_objetivo then
+	if jogo.meteoroides_atingidos == jogo.numero_meteoroides_objetivo then
 	    love.audio.play(musica_vitoria)		
 	else
 		love.audio.play(musica_game_over)
@@ -109,7 +109,7 @@ function love.load()
   	restartact_img = love.graphics.newImage("imagens/menu/srepetir.png")
 
   	comandos_img = love.graphics.newImage("imagens/menu/comandos.png")
-  	meteoro_img = love.graphics.newImage("imagens/asteroide.png")
+  	meteoroide_img = love.graphics.newImage("imagens/asteroide.png")
 
   	winner_img = love.graphics.newImage("imagens/vencedor.png")
   	gameover_img = love.graphics.newImage("imagens/gameover.png")
@@ -136,16 +136,16 @@ function love.update(dt)
 		nave:move(jogo.largura_tela, jogo.altura_tela)
 		moveTiro(nave.tiros)
 
-		removeMeteoros()
+		removeMeteoroides()
 
-	    if #meteoros < jogo.max_meteoros then
-	    	criaMeteoro(jogo.velocidade)
+	    if #meteoroides < jogo.max_meteoroides then
+	    	criaMeteoroide(jogo.velocidade)
 	    end
 
-	    moveMeteoros()
+	    moveMeteoroides()
 	    checaColisoes(jogo, nave)
 		
-	    if jogo.meteoros_atingidos%10 == 0 and jogo.meteoros_atingidos > meta*10  then
+	    if jogo.meteoroides_atingidos%10 == 0 and jogo.meteoroides_atingidos > meta*10  then
 	    	jogo.velocidade = jogo.velocidade + 1
 	    	nave:aumentaVelocidade()
 	    	meta = meta + 1
@@ -153,8 +153,8 @@ function love.update(dt)
 
 	end
 
-	if (jogo.fim_jogo and jogo.meteoros_atingidos > scoreRecorde())	then
-		salvaScore(jogo.meteoros_atingidos)
+	if (jogo.fim_jogo and jogo.meteoroides_atingidos > scoreRecorde())	then
+		salvaScore(jogo.meteoroides_atingidos)
 	end
 	
 end
@@ -229,11 +229,11 @@ function love.draw()
 	        love.graphics.draw(tiro_img, tiro.x, tiro.y) 
 	    end
 	    -- desenha os asteroides
-		for i,meteoro in pairs(meteoros) do
-	    	love.graphics.draw(meteoro_img, meteoro.x, meteoro.y)
+		for i,meteoroide in pairs(meteoroides) do
+	    	love.graphics.draw(meteoroide_img, meteoroide.x, meteoroide.y)
 	    end
 
-	    love.graphics.print("Meteoros atingidos: "..jogo.meteoros_atingidos, 0, 0)
+	    love.graphics.print("Meteoroides atingidos: "..jogo.meteoroides_atingidos, 0, 0)
 	    love.graphics.print("Recorde: "..scoreRecorde(), 0, 12)
 	end
 end
