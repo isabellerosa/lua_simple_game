@@ -1,7 +1,7 @@
 class_nave = require("nave")
 require("tiro")
 require("conf")
-require("meteoroide")
+require("meteoro")
 
 meta = 1
 

@@ -1,5 +1,5 @@
-# Pequeno projeto de game utilizando Lua
-Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE. Com intuito de apresenta-lo em algumas escolas a fim de incentivar jovens a programação.
+# Trabalho de Conceitos de Linguagens de Programação
+Este projeto se trata de um jogo utilizando linguagem Lua e o framework LÖVE para desenvolvimento de jogos 2D.
 
 ## O Jogo
  O objetivo do jogo é destruir uma quantidade objetiva de asteroides.

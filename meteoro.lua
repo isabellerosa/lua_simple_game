@@ -6,10 +6,10 @@
 -- ----------------------------------------
 -- ----------------------------------------
 
-meteoros = {}
+meteoroides = {}
 
-function criaMeteoro(dificuldade)
-	meteoro = {
+function criaMeteoroide(dificuldade)
+	meteoroide = {
 		x = math.random(jogo.largura_tela),
 		y = -70,
 		largura = 50,
@@ -19,13 +19,13 @@ function criaMeteoro(dificuldade)
 		
 	}
 
-	table.insert(meteoros, meteoro)
+	table.insert(meteoroides, meteoroide)
 end
 
-function moveMeteoros()
-	for i,meteoro in pairs(meteoros) do
-		meteoro.y = meteoro.y + meteoro.peso
-		meteoro.x = meteoro.x + meteoro.deslocamento_horizontal
+function moveMeteoroides()
+	for i,meteoroide in pairs(meteoroides) do
+		meteoroide.y = meteoroide.y + meteoroide.peso
+		meteoroide.x = meteoroide.x + meteoroide.deslocamento_horizontal
 	end
 end
 
@@ -38,28 +38,28 @@ end
 
 function checaColisoes(jogo, nave)
 
-	checaColisaoComAviao(nave)
+	checaColisaoComNave(nave)
 	checaColisaoComTiros(nave, jogo)
 
 end
 
-function removeMeteoros()
-	for i = #meteoros,1,-1 do
-		if meteoros[i].y > jogo.altura_tela then
-			table.remove(meteoros, i)
+function removeMeteoroides()
+	for i = #meteoroides,1,-1 do
+		if meteoroides[i].y > jogo.altura_tela then
+			table.remove(meteoroides, i)
 		end
 	end
 end
 
-function limpaMeteoros()
-	for i = #meteoros,1,-1 do
-		table.remove(meteoros, i)
+function limpaMeteoroides()
+	for i = #meteoroides,1,-1 do
+		table.remove(meteoroides, i)
 	end
 end
 
-function checaColisaoComAviao(nave)
-	for k,meteoro in pairs(meteoros) do
-		if temColisao(meteoro.x, meteoro.y, meteoro.largura, meteoro.altura,
+function checaColisaoComNave(nave)
+	for k,meteoroide in pairs(meteoroides) do
+		if temColisao(meteoroide.x, meteoroide.y, meteoroide.largura, meteoroide.altura,
 		 nave.x, nave.y, nave.largura, nave.altura) then
 			trocaMusicaDeFundo()
 			nave:destroi()
